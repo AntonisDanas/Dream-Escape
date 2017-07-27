@@ -46,19 +46,19 @@ public class InputWrapper : MonoBehaviour {
 
             switch (LayerMask.LayerToName(objectHit.layer)) {
                 case "Interactables":
-
+                    DreamEscape.InteractableObject obj = 
+                                objectHit.GetComponent<DreamEscape.InteractableObject>();
+                    m_characterMovement.MovePlayerToInteract(obj);
                     break;
                 case "Walkable":
                     Vector3 newPos = WorldPositionConversions.Conv2DTo3DWithDepth(ray.origin.x, ray.origin.y);
                     m_characterMovement.MovePlayerToPosition(newPos);
-                    print(newPos);
                     break;
                 default:
                     return;
             }
             
         }
-        print("hit");
     }
 
     RaycastHit2D? FindTopPriorityHit(RaycastHit2D[] raycastHits) {
