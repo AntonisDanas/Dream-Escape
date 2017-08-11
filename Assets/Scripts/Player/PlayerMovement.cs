@@ -1,4 +1,8 @@
-﻿using System.Collections;
+﻿/*
+ * Player movement script
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,14 +10,14 @@ namespace DreamEscape.Characters {
     public class PlayerMovement : MonoBehaviour {
 
         [SerializeField] private float m_destinationMargin = 0.1f;
-        [SerializeField] private float m_speed = 1.0F;
+        [SerializeField] private float m_speed = 1.0F; 
+        // For Lerp 
         private float m_startTime;
         private float m_journeyLength;
         private Vector3 m_currentDestination;
         private Vector3 m_currentStart;
         private InteractableObject m_currentInteractableObject;
 
-        // Use this for initialization
         void Start() {
             m_currentDestination = transform.position;
             m_currentStart = transform.position;
@@ -21,7 +25,6 @@ namespace DreamEscape.Characters {
             m_currentInteractableObject = null;
         }
 
-        // Update is called once per frame
         void Update() {
 
             CheckDistanceToDestination();
@@ -30,6 +33,9 @@ namespace DreamEscape.Characters {
 
         }
 
+        /// <summary>
+        /// Set target for the player to move
+        /// </summary>
         public void MovePlayerToPosition(Vector3 pos) {
             m_currentStart = transform.position;
             m_currentDestination = pos;
@@ -37,6 +43,9 @@ namespace DreamEscape.Characters {
             m_journeyLength = Vector3.Distance(m_currentStart, m_currentDestination);
         }
 
+        /// <summary>
+        /// Set object for the player to interact with
+        /// </summary>
         public void MovePlayerToInteract(InteractableObject obj) {
             m_currentStart = transform.position;
             m_currentDestination = obj.GetInteractionCenter();
@@ -45,6 +54,9 @@ namespace DreamEscape.Characters {
             m_currentInteractableObject = obj;
         }
 
+        /// <summary>
+        /// Checks distance from player to destination
+        /// </summary>
         private void CheckDistanceToDestination() {
             if (Vector3.Distance(transform.position, m_currentDestination) > m_destinationMargin) {
                 float distCovered = (Time.time - m_startTime) * m_speed;
@@ -53,6 +65,9 @@ namespace DreamEscape.Characters {
             }
         }
 
+        /// <summary>
+        /// Checks distance from player to interactable interaction center
+        /// </summary>
         private void CheckInteractionWithObject() {
             if (m_currentInteractableObject &&
                     Vector3.Distance(transform.position, m_currentDestination) <

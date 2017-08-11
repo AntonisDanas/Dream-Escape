@@ -1,4 +1,8 @@
-﻿using System.Collections;
+﻿/*
+ * Input Handler
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DreamEscape.Characters;
@@ -7,19 +11,17 @@ using DreamEscape.Utilities;
 public class InputWrapper : MonoBehaviour {
 
     //TODO make singleton
-
-    private PlayerMovement m_characterMovement;
+   
     // INSPECTOR PROPERTIES RENDERED BY CUSTOM EDITOR SCRIPT
     [SerializeField] private int[] layerPriorities;
 
+    private PlayerMovement m_characterMovement;
     private float maxRaycastDepth = 100f; // Hard coded value
 
-    // Use this for initialization
     void Start () {
         m_characterMovement = FindObjectOfType<PlayerMovement>();
     }
 
-    // Update is called once per frame
     void Update () {
         Ray ray = new Ray();
 #if UNITY_EDITOR || UNITY_STANDALONE
@@ -36,6 +38,9 @@ public class InputWrapper : MonoBehaviour {
 
     }
 
+    /// <summary>
+    /// Casts a ray and depending on what it hit it resolves it appropriately
+    /// </summary>
     void ResolveClick(Ray ray) {
         RaycastHit2D[] raycastHits = Physics2D.RaycastAll(ray.origin,ray.direction,maxRaycastDepth);
 
@@ -61,6 +66,9 @@ public class InputWrapper : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Returns the layer hit depending on the priority queue
+    /// </summary>
     RaycastHit2D? FindTopPriorityHit(RaycastHit2D[] raycastHits) {
         // Form list of layer numbers hit
         List<int> layersOfHitColliders = new List<int>();

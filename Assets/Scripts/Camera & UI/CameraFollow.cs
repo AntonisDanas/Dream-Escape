@@ -1,25 +1,29 @@
-﻿using System.Collections;
+﻿/*
+ * Camera Control script 
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace DreamEscape {
     public class CameraFollow : MonoBehaviour {
 
-        public Transform target;
+        public Transform target; // Camera target
 
+        // Camera borders
         [SerializeField] private float m_topBorder = 1f;
         [SerializeField] private float m_bottomBorder = 1f;
         [SerializeField] private float m_leftBorder = 1f;
         [SerializeField] private float m_rightBorder = 1f;
 
-        // Use this for initialization
         void Start() {
+            // Set camera to target position
             transform.position = new Vector3(target.position.x,
                                             target.position.y,
                                             transform.position.z)  ;
         }
 
-        // Update is called once per frame
         void LateUpdate() {
             transform.position = CorrectCameraPosition();
         }
@@ -42,6 +46,10 @@ namespace DreamEscape {
             Gizmos.color = oldColor;
         }
 
+        /// <summary>
+        /// Corrects the position of the camera depending on the borders
+        /// </summary>
+        /// <returns>Final camera position</returns>
         private Vector3 CorrectCameraPosition() {
 
             float vertSize = Camera.main.orthographicSize;
